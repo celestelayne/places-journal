@@ -92,6 +92,23 @@ src/
 └── main.tsx        # React application entry point
 ```
 
+## Roadmap
+
+| Sprint | Focus | Status |
+|---:|---|---|
+| 0 | Repository foundation | Current |
+| 1 | Place and Note contracts | Planned |
+| 2 | Static places collection | Planned |
+| 3 | Routing and place detail | Planned |
+| 4 | Local CRUD | Planned |
+| 5 | Notes and visits | Planned |
+| 6 | Search, filters, and favorites | Planned |
+| 7 | Persistence and typed API boundary | Planned |
+| 8 | Authentication and record ownership | Planned |
+| 9 | AI capture inbox and reviewable drafts | Planned |
+| 10 | Read-only “ask your collection” agent | Planned |
+| 11 | Human-approved agent actions | Planned |
+
 ## Working with AI coding agents
 
 Repository-level instructions for coding agents live in [`AGENTS.md`](./AGENTS.md).
