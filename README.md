@@ -1,75 +1,106 @@
-# React + TypeScript + Vite
+# Places Journal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A private places journal for saving restaurants and other places, preserving
+recommendations and visit notes, and retrieving them later for the right
+occasion.
 
-Currently, two official plugins are available:
+This is also a design-engineering exploration of how a classic CRUD application
+can evolve into a workflow-oriented, AI-assisted product without giving an AI
+system unbounded authority over user data.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Current status
 
-## React Compiler
+**Sprint 0 — Repository foundation**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The app is not functional yet. This sprint establishes the React project,
+documentation, validation workflow, and scope rules that later sprints will use.
 
-## Expanding the ESLint configuration
+## Product direction
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The eventual product will help a person:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Save a place and preserve why it matters
+- Add notes, recommendations, and visit memories
+- Filter and retrieve a personal collection
+- Build shortlists for occasions
+- Turn messy input into reviewable drafts
+- Use AI for retrieval and structured proposals, with human approval required before persistent changes
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Guiding principles
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- CRUD is the system of record, not the entire product experience.
+- The user should be able to work through normal interfaces and forms.
+- AI should help interpret, retrieve, and draft—not silently write or invent facts.
+- Facts, inferences, proposals, and completed actions must be distinguishable.
+- Consequential changes require explicit human review.
+- Build the smallest useful vertical slice before adding infrastructure.
 
+## Tech stack
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- npm
+
+Additional tools will be added only when a current product requirement justifies
+them.
+
+## Getting started
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Install
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+### Run locally
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+Open the local URL printed by Vite.
+
+### Validate
+
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+```
+
+Some commands may not exist until the template’s validation tooling is finalized.
+Check `package.json` for the currently available scripts.
+
+## Repository structure
+
+```text
+src/
+├── app/            # App-level composition and future routing
+├── components/
+│   └── ui/         # Reusable, presentational primitives only
+├── contracts/      # Domain/API schemas
+├── features/       # Product-specific code
+├── index.css       # Global CSS and Tailwind entry point
+└── main.tsx        # React application entry point
+```
+
+## Working with AI coding agents
+
+Repository-level instructions for coding agents live in [`AGENTS.md`](./AGENTS.md).
+
+1. `AGENTS.md` defines persistent repository rules.
+2. The current task prompt defines the narrow goal, allowed files, acceptance criteria, and explicit out-of-scope work.
+
+Do not ask an agent to “build the app.” Work in scoped vertical slices.
+
+## License
+
+Private and experimental. No license granted.
