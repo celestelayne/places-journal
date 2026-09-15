@@ -10,10 +10,11 @@ system unbounded authority over user data.
 
 ## Current status
 
-**Sprint 0 — Repository foundation**
+**Sprint 1 — Domain contracts**
 
-The app is not functional yet. This sprint establishes the React project,
-documentation, validation workflow, and scope rules that later sprints will use.
+The project is defining the canonical `Place` schema and validation behavior.
+No product UI, seed data, routing, persistence, authentication, or AI
+functionality has been implemented yet.
 
 ## Product direction
 
@@ -82,6 +83,10 @@ Check `package.json` for the currently available scripts.
 ## Repository structure
 
 ```text
+docs/
+├── adr/            # Architecture Decision Records (MADR-lite)
+└── sprints/        # Sprint briefs
+
 src/
 ├── app/            # App-level composition and future routing
 ├── components/
@@ -96,8 +101,8 @@ src/
 
 | Sprint | Focus | Status |
 |---:|---|---|
-| 0 | Repository foundation | Current |
-| 1 | Place and Note contracts | Planned |
+| 0 | Repository foundation | Complete |
+| 1 | Place contract | Current |
 | 2 | Static places collection | Planned |
 | 3 | Routing and place detail | Planned |
 | 4 | Local CRUD | Planned |
@@ -117,6 +122,14 @@ Repository-level instructions for coding agents live in [`AGENTS.md`](./AGENTS.m
 2. The current task prompt defines the narrow goal, allowed files, acceptance criteria, and explicit out-of-scope work.
 
 Do not ask an agent to “build the app.” Work in scoped vertical slices.
+
+## Design documentation
+
+- [`docs/adr/`](./docs/adr) — Architecture Decision Records. Durable
+  design decisions with rationale, in MADR-lite format.
+- [`docs/sprints/`](./docs/sprints) — Per-sprint implementation briefs.
+  Field tables, test outlines, and verification checklists for each
+  sprint.
 
 ## License
 

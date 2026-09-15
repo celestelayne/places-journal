@@ -11,45 +11,101 @@ CRUD application can evolve into a trustworthy, AI-assisted workflow product.
 
 ## Current milestone
 
-Sprint 0 — Repository foundation.
+Sprint 1 — Domain contracts.
 
-The only goal of this sprint is a working Vite + React + TypeScript project
-with a clear repository structure, documentation, and validation commands.
+Define and test the canonical runtime schemas and inferred TypeScript types for
+a saved `Place`, including create and update inputs. This sprint establishes the
+application’s initial domain vocabulary and validation rules.
+
+No UI, seed data, routing, API calls, persistence, authentication, or AI
+functionality belongs in this sprint.
 
 ## Current scope
 
 Allowed:
-- Maintain the existing Vite + React + TypeScript setup.
-- Configure or verify Tailwind, if it is already part of the chosen template.
-- Keep `src/index.css` as the single global stylesheet entry point.
-- Add or improve repository documentation.
-- Add minimal application-shell UI needed to verify the app runs.
-- Repair configuration only when a documented command fails.
+- Add runtime schemas and inferred TypeScript types in `src/contracts`.
+- Define the initial `Place` contract.
+- Define supported `Cuisine` and `PriceTier` values.
+- Define create-place and update-place input contracts.
+- Define required, nullable, user-editable, and system-managed fields.
+- Define the behavior for explicit `null` values in update input.
+- Reject an empty update input object.
+- Add focused schema-validation tests for valid and invalid data.
+- Add explicitly-approved dependencies to `package.json`. Sprint 1 approves `zod` (already installed) and `vitest` (devDependency).
+- Add the `test` and `typecheck` npm scripts to `package.json` (Sprint 1 approved).
+- Update `package-lock.json` as a consequence of an approved dependency change.
 
 Not allowed:
-- Do not add domain models, schemas, contracts, seed data, routes, or features.
-- Do not add React Router, a data-fetching library, global state, a component
-  library, Supabase, a database, authentication, API routes, or an AI SDK.
-- Do not add dependencies without explicit user approval.
-- Do not refactor template code merely for preference.
-- Do not create generic abstractions or a design system.
-- Do not modify CI, deployment, environment configuration, or lockfiles unless
-  explicitly requested.
+- Do not create product UI, place lists, detail pages, forms, cards,
+  filters, search, favorite controls, or reusable UI primitives.
+- Do not add local product seed data.
+- Do not add React Router, routes, API clients, `fetch`, server routes,
+  database code, Supabase, migrations, authentication, or environment files.
+- Do not add state-management, data-fetching, component-library, or AI libraries.
+- Do not create `Note`, `Collection`, `AgentProposal`, or other future
+  domain contracts unless explicitly approved.
+- Do not modify `App.tsx`, `main.tsx`, `index.css`, build configuration,
+  CI, or deployment configuration.
+- Modify `package.json` and `package-lock.json` only for dependencies and
+  scripts explicitly approved in the current sprint brief.
+- Do not invent fields beyond the approved `Place` contract.
 
 ## Project structure
 
-Current intended structure:
-
 ```text
+docs/
+├── adr/                 # Architecture Decision Records (MADR-lite)
+└── sprints/             # Sprint briefs
+
 src/
-├── app/            # App composition; intentionally minimal in Sprint 0
+├── app/                 # App composition; no routing in Sprint 1
 ├── components/
-│   └── ui/         # Empty until a reusable primitive is proven necessary
-├── contracts/      # Empty until Sprint 1
-├── features/       # Empty until Sprint 2
-├── index.css       # Global CSS and Tailwind entry point
-└── main.tsx        # Application entry point
+│   └── ui/              # Empty until a reusable primitive is proven necessary
+├── contracts/
+│   ├── places.ts        # Sprint 1 canonical Place schema and types
+│   └── places.test.ts   # Sprint 1 focused contract tests
+├── features/            # Empty until Sprint 2
+├── index.css            # Global CSS and Tailwind entry point
+└── main.tsx             # Application entry point
 ```
+
+## Contract rules
+
+- `src/contracts` is the canonical home for domain schemas and types.
+- Runtime schemas are the source of truth. See
+  [ADR 0001](./docs/adr/0001-schemas-as-source-of-truth.md).
+- Infer TypeScript types from schemas; do not create duplicate handwritten
+  interfaces for the same data shape.
+- Unknown persisted metadata must use `null`, not invented placeholder values.
+- Use `undefined` only for omitted optional input fields.
+- Identity fields (UUID) and provenance timestamps (`createdAt`, `updatedAt`)
+  are system-managed and excluded from every input schema. Timestamps are
+  ISO 8601 UTC-only, validated with `z.iso.datetime({ offset: false })`.
+  See [ADR 0002](./docs/adr/0002-system-managed-fields.md).
+- All contract schemas use `.strict()`. Unknown keys are rejected, not
+  silently stripped. See [ADR 0003](./docs/adr/0003-strict-schemas.md).
+- Free-form string fields are trimmed on parse. Empty strings on nullable
+  fields coerce to `null`; contracts must not treat `""` as a third
+  "unknown" sentinel alongside `null`.
+- URL fields accept `http` and `https` schemes only.
+- Update-input schemas follow PATCH semantics: omit means leave alone,
+  `null` clears (nullable fields only), a value sets. Target `id` is
+  passed separately to any future update function, not inside the input.
+  See [ADR 0004](./docs/adr/0004-patch-semantics-for-updates.md).
+- For each entity, export two type names: `<Verb><Entity>Input` from
+  `z.input<...>` (holes allowed) and `<Verb><Entity>` from
+  `z.output<...>` (holes filled).
+- Contract changes require explicit approval before implementation.
+- Do not add API-specific response envelopes or database types in Sprint 1.
+
+## Domain vocabulary
+
+- `Cuisine` — fixed enum. Members: `American`, `Chinese`, `Ethiopian`,
+  `French`, `Indian`, `Italian`, `Japanese`, `Korean`, `Mexican`, `Thai`.
+  No `"Other"`. Unknown cuisine is represented as `null` on the persisted
+  record.
+- `PriceTier` — fixed enum: `"$"`, `"$$"`, `"$$$"`, `"$$$$"`. Unknown is
+  represented as `null` on the persisted record.
 
 ## Code conventions
 
@@ -82,10 +138,8 @@ or dependency in order to make it exist.
 ## Working with the user
 
 - Inspect relevant files before proposing changes.
-- For any change affecting more than 3 files or project configuration, provide
-  a concise plan before editing.
-- If a requirement is ambiguous, ask a focused question rather than choosing
-  an architecture or product behavior.
+- For any change affecting more than 3 files or project configuration, provide a concise plan before editing.
+- If a requirement is ambiguous, ask a focused question rather than choosing an architecture or product behavior.
 - Make the smallest valid change that meets the stated acceptance criteria.
 - Do not expand a task with "while I am here" refactors.
 
@@ -98,3 +152,12 @@ After every implementation task, report:
 3. Files intentionally not changed
 4. Validation commands run and their results
 5. Assumptions, limitations, or blocked follow-up work
+
+## Documentation
+
+- `docs/adr/` holds Architecture Decision Records in MADR-lite format.
+  New ADRs use the next available four-digit number. Template:
+  [`0000-template.md`](./docs/adr/0000-template.md).
+- `docs/sprints/` holds per-sprint implementation briefs (field tables,
+  test outlines, commit plans, verification checklists). One file per
+  sprint; frozen once the sprint ships.
