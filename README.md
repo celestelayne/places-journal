@@ -10,11 +10,12 @@ system unbounded authority over user data.
 
 ## Current status
 
-**Sprint 1 — Domain contracts**
+**Sprint 2 — Read the static collection**
 
-The project is defining the canonical `Place` schema and validation behavior.
-No product UI, seed data, routing, persistence, authentication, or AI
-functionality has been implemented yet.
+Sprint 1 shipped the canonical `Place` schema and validation. Sprint 2 is
+the first Read operation: a small set of typed seed records rendered
+through the Sprint 1 contract. No editing, persistence, routing, or AI
+functionality yet.
 
 ## Product direction
 
@@ -102,12 +103,12 @@ src/
 | Sprint | Focus | Status |
 |---:|---|---|
 | 0 | Repository foundation | Complete |
-| 1 | Place contract | Current |
-| 2 | Static places collection | Planned |
-| 3 | Routing and place detail | Planned |
-| 4 | Local CRUD | Planned |
-| 5 | Notes and visits | Planned |
-| 6 | Search, filters, and favorites | Planned |
+| 1 | Place contract | Complete |
+| 2 | Read the static collection | Current |
+| 3 | Read a single place (routing and detail) | Planned |
+| 4 | Create, update, delete (local) | Planned |
+| 5 | Notes and visits (child records) | Planned |
+| 6 | Read at scale (search, filters, favorites) | Planned |
 | 7 | Persistence and typed API boundary | Planned |
 | 8 | Authentication and record ownership | Planned |
 | 9 | AI capture inbox and reviewable drafts | Planned |
